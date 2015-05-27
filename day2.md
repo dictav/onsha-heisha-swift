@@ -167,21 +167,55 @@ _ Hoge.playground
 視覚化してみる
 -------------
 
-NSSlider/NSColor をそれぞれ視覚化してみる
+Playground の視覚化には３つの手法があります。それぞれ簡単な例を示して表示してみます。
 
-> お題
-> NSColor を使ってカラーパレットを作る
+### 標準のコンポーネント
 
-### NSBezierPath
+* NSSlider
+* NSColor
+* NSBezierPath: `BezierPolygon(UInt) -> NSBezierPath` という関数を用意しました
+
+をそれぞれ視覚化してみる。
+
+#### お題
+
+NSColor を使ってカラーパレットを作る
 
 ### XCPCaptureValue
 
-### debugQuickLookObject
-
-## View と連携してみる
+`XCPCaptureValue` を使うことで Timeline にグラフを表示することができます
 
 ### XCPShowView
 
+自分の作成した View を Timeline に表示することもできます
+
+### debugQuickLookObject
+
+NSSlider や NSColor などが独自のビューを表示するのは `debugQuickLookObject` メソッドが定義されているからです。これを実装すれば自分の作成したClassに同じように描画機能を持たせることができます。
+
+### NSWindow
+
+さて、ここまでは「Playground の中にいかにして結果を表示するか」ということに注力してやってきました。
+「ユーザからのレスポンスを受け取って表示したい」のような要件にはこれまでの方法ではできませんので、自力で Window を作って表示してみます。
+
+次のようなコードで Window を作成することができます。
+
+```
+public func makeWindow(view: NSView) -> NSWindow {
+    // Window size
+    
+    var window = NSWindow(contentRect: NSRect(x: 600, y: 600, width: 400, height: 100), styleMask: NSTitledWindowMask, backing: .Buffered, defer: false)
+    
+    // Configure window here
+    
+    // configure your content view and add subviews here
+    window.contentView.addSubview(view)
+    window.makeKeyAndOrderFront(nil)
+    window.level = 7
+    
+    return window
+}
+```
 
 CIFilter で遊ぶ
 --------------
