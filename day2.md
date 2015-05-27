@@ -1,8 +1,31 @@
-# おンしゃへいしゃふつかめ
+おンしゃへいしゃふつかめ
+=======================
+
+**Playground は version 5.0(Xcode6.3) 以降で仕様が大きく変わりました**
 
 Playground と戯れる
 
-## How to
+How to
+------
+
+### 基本操作
+
+#### Assistant Editor
+
+右クリックから `Open in Assistant Editor` を選択するか、メニューから `View > Assistant Editor > Open Assistant Editor` を選択すると開くことができます。これは画面分割のような機能で、同時に複数のファイルを見ることができます。ファイルは上部バーにあるパンくずリストにようなメニューから選択することができます。
+
+Playground では `Timeline` を選択することで　`println` などの出力を見ることができます。
+
+#### キーボードアクション
+
+* Cmd+クリック: 実装にジャンプできます
+* Option+クリック: マニュアルを見ることができます
+
+#### 実行
+
+Playground ではコードを書くと自動的に実行されますが、同じコードを何度も実行したい時などはメニューから `Editor > Excecute Playground` を選択します。
+
+### 課題をやってみる
 
 前回ざっくりと Swift を思い出してもらったので、実際にコードを書いてみましょう。
 
@@ -48,15 +71,45 @@ benchmark {
 
 Playground には計算結果をグラフ化する機能が標準であります。
 
-## Resources を表示してみる
+
+Resources を表示してみる
+-----------------------
+
+Playground には Resouces というディレクトリが存在します。
+ここには画像など Playground と関係するファイルを格納できます。
+
+### NSImage(named:)
+
+`NSImage(named:)` にファイル名を渡すことで簡単に画像を表示できます。
 
 ### NSBundle
 
+`NSBundle.mainBundle().pathForImageResource` 次のコードでファイルへのパスを取得することができます。
+これで得られたパスを `NSImage(contentsOfFile:)` を渡すことで画像を表示することができます。
+
 ### XCPSharedDataDirectoryPath
 
-## 文書化してみる
+Playground は sandbox 化された環境で動作しており、外部のファイルにアクセスすることはできません。
+ただ、１つだけ例外が用意されており、`XCPSharedDataDirectoryPath` にはアクセスすることができます。
+これは一般的には `/Users/username/Documents/Shared Playground Data` というディレクトリになります。この共有ディレクトリにファイルを置けばアクセスできます。
 
-**version 4.0(5.0?) 以降で仕様が大きく変わりました**
+```
+let path = XCPSharedDataDirectoryPath.stringByAppendingPathComponent("loltube.png")
+```
+
+#### 転ばぬ先の杖、環境変数にアクセスする
+
+`XCPSharedDataDirectoryPath` はサンドボックスな中にあり、実態はシンボリックリンクです。このシンボリックリンクが実際にどこを指しているか、というのは次のように環境変数にアクセスすることで調べることができます。
+
+```
+let env = NSProcessInfo.processInfo().environment
+println(env["PLAYGROUND_SHARED_DATA_FOLDER"])
+```
+
+
+文書化してみる
+-------------
+
 
 ### Playground の構成
 
@@ -111,7 +164,8 @@ _ Hoge.playground
 
 このように書くとIDEが理解でき参照しやすくなります。
 
-## 視覚化してみる
+視覚化してみる
+-------------
 
 NSSlider/NSColor をそれぞれ視覚化してみる
 
@@ -129,7 +183,8 @@ NSSlider/NSColor をそれぞれ視覚化してみる
 ### XCPShowView
 
 
-## CIFilter で遊ぶ
+CIFilter で遊ぶ
+--------------
 
 ## 参考URL
 
