@@ -2,11 +2,6 @@
 
 import Cocoa
 
-let list = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-
-println("")
-println(list)
-
 //: フィボナッチ数列
 var fib = simpleFib
 
