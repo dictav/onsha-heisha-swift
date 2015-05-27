@@ -220,6 +220,11 @@ public func makeWindow(view: NSView) -> NSWindow {
 CIFilter で遊ぶ
 --------------
 
+Core Image Filter Reference
+https://developer.apple.com/library/mac/documentation/GraphicsImaging/Reference/CoreImageFilterReference/index.html
+
+を参考に画像にフィルターをかけてみる
+
 ## 参考URL
 
 * https://itunes.apple.com/us/book/playground-secrets-power-tips/id982838034
