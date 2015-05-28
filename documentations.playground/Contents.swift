@@ -26,3 +26,14 @@ func hello(name: String) -> String {
     println(msg)
     return msg
 }
+
+/** これは hello を表示します
+
+ :param: name: 名前
+ :returns: 名前
+*/
+func hello2(name: String) -> String {
+    let msg = "Hello, \(name)!"
+    println(msg)
+    return msg
+}

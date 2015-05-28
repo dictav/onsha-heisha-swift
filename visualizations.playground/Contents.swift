@@ -34,7 +34,7 @@ for n in 1...100 {
 //: XCPShowView
 let view = NSImageView(frame: NSMakeRect(0, 0, 100, 100))
 view.image = NSImage(named: "loltube.png")
-XCPShowView("red view", view)
+XCPShowView("image view", view)
 
 //: debugQuickLookObject
 //:
