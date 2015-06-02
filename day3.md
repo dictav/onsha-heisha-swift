@@ -37,8 +37,28 @@ XCPSetExecutionShouldContinueIndefinitely(continueIndefinitely: true)
 
 ### NSOperationQueue
 
-生の Thread はいろいろ問題を引き起こすということで、iOS4 のころから導入された非同期処理のためのクラスが NSOperationQueue です。
+NSThread は扱いが難しく、いろいろ問題を引き起こすということで、iOS4 のころから導入された非同期処理のためのクラスが NSOperationQueue です。
 
+iOS4 以前にも NSOperation を使った非同期処理は可能でしたが、NSOperation を継承したクラスを実装する必要があり、ちょっとしたことをするにはあまり一般的ではありませんでした。これを比較的簡単にしたのが NSOperationQueue と Block という新文法でした。
+
+```
+import Foundation
+import XCPlayground
+
+NSOperationQueue().addOperationWithBlock {
+    NSThread.sleepForTimeInterval(0.3)
+    println("Hello, NSOperationQueue")
+}
+
+// thread の終了を待つため
+XCPSetExecutionShouldContinueIndefinitely(continueIndefinitely: true)
+```
+
+### Grand Central Dispatch
+
+NSOperationQueue と同時に導入されたのが GCD (Grand Central Dispatch) です。NSOperation/NSOperationQueue のベースはGCDです。
+
+GCD は自分で thread を生成しません。
 
 ## 通信
 
