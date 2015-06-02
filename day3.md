@@ -8,6 +8,8 @@
 * NSOperationQueue
 * Grand Central Dispatch
 
+参考: https://developer.apple.com/jp/documentation/ConcurrencyProgrammingGuide.pdf
+
 ### NSThread
 
 NSThread は最も基本的な非同期処理の手法です。メッセージ送信を使って任意の処理を行います。
@@ -58,7 +60,25 @@ XCPSetExecutionShouldContinueIndefinitely(continueIndefinitely: true)
 
 NSOperationQueue と同時に導入されたのが GCD (Grand Central Dispatch) です。NSOperation/NSOperationQueue のベースはGCDです。
 
-GCD は自分で thread を生成しません。
+GCD は自分で thread を生成しません。処理を Queue に追加するだけで GCD が必要なだけ thread を生成し次々に処理を実行してくれます。
+
+```
+import Foundation
+import XCPlayground
+
+let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+dispatch_async(queue, {
+    println("Hello, GCD")
+})
+
+// thread の終了を待つため
+XCPSetExecutionShouldContinueIndefinitely(continueIndefinitely: true)
+```
+
+### まとめ
+
+非同期を実現したいだけであれば NSOperationQueue を使うのが簡単だと思います。ただ、GCD を直接扱うことでより効率の良いプログラミングを書いたり、シリアルに処理を実行するキューを定義したりできるので、複雑なことをするには GCD を使うのが良いと思います。
+スレッド管理に長けて入れば NSThread や pthread を直接使うのも良いと思います。
 
 ## 通信
 
