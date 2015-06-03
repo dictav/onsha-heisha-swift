@@ -37,6 +37,10 @@ XCPSetExecutionShouldContinueIndefinitely(continueIndefinitely: true)
 ここで注意したいのは、 この `target` と `selector` によるオブジェクトのメッセージ送信は Swift では推奨されておらず、類似の多くのメソッドが実装されていません。
 例えば `-[NSObject peformSelectorInBackground:withObject:]` などは UIKit で非同期処理を行う時によく使われましたが Swift にはありません。
 
+#### お題
+
+100個スレッド作成する( `NSThread.currentThread` を使うと現在のスレッドの情報を得ることができます。)
+
 ### NSOperationQueue
 
 NSThread は扱いが難しく、いろいろ問題を引き起こすということで、iOS4 のころから導入された非同期処理のためのクラスが NSOperationQueue です。
@@ -56,6 +60,11 @@ NSOperationQueue().addOperationWithBlock {
 XCPSetExecutionShouldContinueIndefinitely(continueIndefinitely: true)
 ```
 
+#### お題
+
+1. 1個キューに100個オペレーションを追加してスレッド情報を表示する
+2. 100個キューを作成してスレッド情報を表示する
+
 ### Grand Central Dispatch
 
 NSOperationQueue と同時に導入されたのが GCD (Grand Central Dispatch) です。NSOperation/NSOperationQueue のベースはGCDです。
@@ -66,14 +75,61 @@ GCD は自分で thread を生成しません。処理を Queue に追加する�
 import Foundation
 import XCPlayground
 
+// global queue
 let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
 dispatch_async(queue, {
+    println("Hello, GCD")
+})
+
+// private queue
+let pqueue = dispatch_queue_create("my queue")
+dispatch_async(pqueue, {
     println("Hello, GCD")
 })
 
 // thread の終了を待つため
 XCPSetExecutionShouldContinueIndefinitely(continueIndefinitely: true)
 ```
+
+GCD でオペレーションの終了を待つには dispatch group を使います
+
+```
+import Foundation
+import XCPlayground
+
+let queue1 = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+dispatch_async(queue, {
+    println("Hello, GCD")
+})
+
+let queue2 = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+
+let group = dispatch_group_create()
+
+dispatch_group_async(group, queue1) {
+    NSThread.sleepForTimeInterval(0.1)
+    println("gourp thread:" + NSThread.currentThread().description)
+}
+
+dispatch_group_async(group, queue2) {
+    NSThread.sleepForTimeInterval(0.1)
+    println("gourp thread:" + NSThread.currentThread().description)
+}
+
+dispatch_group_notify(group, queue) {
+    println("finished")
+}
+
+dispatch_group_wait(group, DISPATCH_TIME_FOREVER)
+println("done")
+
+```
+
+#### お題
+
+1. １つのグローバルキューを取得し、100個オペレーションを追加してスレッド情報を表示する
+2. １つのプライベートキューを作成し、100個オペレーションを追加してスレッド情報を表示する
+
 
 ### まとめ
 
@@ -211,7 +267,7 @@ Taskには以下のものが用意されています。
 ### NSStream
 
 NSStream は CFStream という C の実装をラッピングしたクラスです。
-これをやろうと思ったんですが、想像より swift への移植が難航してしまったので宿題にさせてください
+ここをがっつりやろうと思ったんですが、想像より swift への移植が難航してしまったので宿題にさせてください
 
 #### お題
 
