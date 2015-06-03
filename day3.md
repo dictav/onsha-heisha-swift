@@ -90,6 +90,83 @@ Cocoa には主に以下のような通信手段があります。
 * NSURLSession を使ったちょうど良い通信
 * NSStream を使ったがっつり通信
 
+### NSURLConnection
+
+Delegate を使うとプログレスバーの実装などきめ細かいプログラミングが可能です。
+今回はシンプルに通信を行うところだけに紹介します。
+
+#### 同期通信
+
+NSURLConnection は同期通信・非同期通信両方のメソッドが定義されています。
+
+まず同期通信は以下。
+
+```
+import Foundation
+
+let request = NSURLRequest(URL: NSURL(string: "http://www.google.com")!)
+var res: NSURLResponse?
+var err: NSError?
+let data = NSURLConnection.sendSynchronousRequest(request, returningResponse: &res, error: &err)
+
+if let e = err {
+    println("error:" + e.description)
+    exit(0)
+}
+    
+if let r = res as? NSHTTPURLResponse where r.statusCode != 200 {
+    println("error response code:" + r.description)
+    exit(0)
+}
+
+if  let d   = data,
+    let str = NSString(data: d, encoding: NSASCIIStringEncoding)
+{
+    println(str)
+    exit(0)
+}
+
+println(res)
+println(err)
+```
+
+次に非同期通信。これは iOS5 から利用可能になりました。
+
+```
+import Foudation
+import XCPlayground
+
+let request = NSURLRequest(URL: NSURL(string: "http://www.google.com")!)
+NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue()) {
+    (res, data, err) -> Void in
+    
+    if let e = err {
+        println("error:" + e.description)
+        return
+    }
+    
+    if let r = res as? NSHTTPURLResponse where r.statusCode != 200 {
+        println("error response code:" + r.description)
+        return
+    }
+    
+    if  let d   = data,
+        let str = NSString(data: d, encoding: NSASCIIStringEncoding)
+    {
+        println(str)
+    }
+
+    println(res)
+    println(err)
+}
+
+XCPSetExecutionShouldContinueIndefinitely(continueIndefinitely: true)
+```
+
+
+
+
+
 ### NSStream
 
 NSStream は CFStream という C の実装をラッピングしたクラスです。
