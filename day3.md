@@ -163,9 +163,50 @@ NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue()) {
 XCPSetExecutionShouldContinueIndefinitely(continueIndefinitely: true)
 ```
 
+非同期通信を行うメソッドを書いているとどこかで同期をとりたくなることがあるので、同期通信で処理は書いておいて NSOperationQueue で非同期にする方が使い勝手が良いことが多いです。
 
+### NSURLSession
 
+iOS7 から現れた新生に NSURLSession というのがあります。こちらはセッション情報もまとめて管理してくれる優れもので、HTTP(S) 専用です。
 
+```
+import Foundation
+import XCPlayground
+
+let request = NSURLRequest(URL: NSURL(string: "http://www.google.com")!)
+let session = NSURLSession.sharedSession()
+let task = session.dataTaskWithRequest(request, completionHandler: {
+    (data, res, err) -> Void in
+    
+    if let e = err {
+        println("error:" + e.description)
+        return
+    }
+    
+    if let r = res as? NSHTTPURLResponse where r.statusCode != 200 {
+        println("error response code:" + r.description)
+        return
+    }
+    
+    if  let d   = data,
+        let str = NSString(data: d, encoding: NSASCIIStringEncoding)
+    {
+        println(str)
+    }
+})
+
+task.resume()
+
+XCPSetExecutionShouldContinueIndefinitely(continueIndefinitely: true)
+```
+
+NSURLSessionTask を作って動作させる形です。
+NSOperationQueue を意識しなくてもプログラムが組めることと `suspend` と `resume` を使うことで NSURLConnection ではかなり面倒だったダウンロードの一時停止などを行うことができます。
+Taskには以下のものが用意されています。
+
+* NSURLSessionDataTask
+* NSURLSessionUploadTask
+* NSURLSessionDownloadTask
 
 ### NSStream
 
