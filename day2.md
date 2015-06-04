@@ -8,6 +8,8 @@ Playground と戯れる
 How to
 ------
 
+howto.playground 参照
+
 ### 基本操作
 
 #### Assistant Editor
@@ -75,6 +77,8 @@ Playground には計算結果をグラフ化する機能が標準であります
 Resources を表示してみる
 -----------------------
 
+resources.playground 参照
+
 Playground には Resouces というディレクトリが存在します。
 ここには画像など Playground と関係するファイルを格納できます。
 
@@ -109,6 +113,8 @@ println(env["PLAYGROUND_SHARED_DATA_FOLDER"])
 
 文書化してみる
 -------------
+
+documentations.playground 参照
 
 
 ### Playground の構成
@@ -167,6 +173,8 @@ _ Hoge.playground
 視覚化してみる
 -------------
 
+visualizations.playground
+
 Playground の視覚化には３つの手法があります。それぞれ簡単な例を示して表示してみます。
 
 ### 標準のコンポーネント
@@ -219,6 +227,8 @@ public func makeWindow(view: NSView) -> NSWindow {
 
 CIFilter で遊ぶ
 --------------
+
+cifilters.playground
 
 Core Image Filter Reference
 https://developer.apple.com/library/mac/documentation/GraphicsImaging/Reference/CoreImageFilterReference/index.html

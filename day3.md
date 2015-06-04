@@ -1,8 +1,10 @@
-# おんしゃへいしゃべんきょうかい３にちめ
+おんしゃへいしゃべんきょうかい３にちめ
+=====================================
 
 非同期処理と通信をやります
 
-## 非同期処理
+非同期処理
+---------
 
 * NSThread
 * NSOperationQueue
@@ -11,6 +13,8 @@
 参考: https://developer.apple.com/jp/documentation/ConcurrencyProgrammingGuide.pdf
 
 ### NSThread
+
+nsthread.playground 参照
 
 NSThread は最も基本的な非同期処理の手法です。メッセージ送信を使って任意の処理を行います。
 
@@ -43,6 +47,8 @@ XCPSetExecutionShouldContinueIndefinitely(continueIndefinitely: true)
 
 ### NSOperationQueue
 
+nsoperationqueue.playground 参照
+
 NSThread は扱いが難しく、いろいろ問題を引き起こすということで、iOS4 のころから導入された非同期処理のためのクラスが NSOperationQueue です。
 
 iOS4 以前にも NSOperation を使った非同期処理は可能でしたが、NSOperation を継承したクラスを実装する必要があり、ちょっとしたことをするにはあまり一般的ではありませんでした。これを比較的簡単にしたのが NSOperationQueue と Block という新文法でした。
@@ -66,6 +72,8 @@ XCPSetExecutionShouldContinueIndefinitely(continueIndefinitely: true)
 2. 100個キューを作成してスレッド情報を表示する
 
 ### Grand Central Dispatch
+
+gcd.playground 参照
 
 NSOperationQueue と同時に導入されたのが GCD (Grand Central Dispatch) です。NSOperation/NSOperationQueue のベースはGCDです。
 
@@ -136,7 +144,8 @@ println("done")
 非同期を実現したいだけであれば NSOperationQueue を使うのが簡単だと思います。ただ、GCD を直接扱うことでより効率の良いプログラミングを書いたり、シリアルに処理を実行するキューを定義したりできるので、複雑なことをするには GCD を使うのが良いと思います。
 スレッド管理に長けて入れば NSThread や pthread を直接使うのも良いと思います。
 
-## 通信
+通信
+----
 
 Cocoa には主に以下のような通信手段があります。
 
@@ -147,6 +156,8 @@ Cocoa には主に以下のような通信手段があります。
 * NSStream を使ったがっつり通信
 
 ### NSURLConnection
+
+nsurlconnection.playground 参照
 
 Delegate を使うとプログレスバーの実装などきめ細かいプログラミングが可能です。
 今回はシンプルに通信を行うところだけに紹介します。
@@ -223,6 +234,8 @@ XCPSetExecutionShouldContinueIndefinitely(continueIndefinitely: true)
 
 ### NSURLSession
 
+nsurlsession.playground 参照
+
 iOS7 から現れた新生に NSURLSession というのがあります。こちらはセッション情報もまとめて管理してくれる優れもので、HTTP(S) 専用です。
 
 ```
@@ -266,6 +279,8 @@ Taskには以下のものが用意されています。
 
 ### NSStream
 
+nsstream.playground 参照
+
 NSStream は CFStream という C の実装をラッピングしたクラスです。
 ここをがっつりやろうと思ったんですが、想像より swift への移植が難航してしまったので宿題にさせてください
 
@@ -274,6 +289,8 @@ NSStream は CFStream という C の実装をラッピングしたクラスで�
 Echo サーバーを作って外部から Call しよう
 
 ## おまけ
+
+omake.playground 参照
 
 Swift は C 言語ととても仲の良い言語です。
 Cのポインタを扱うために UnsafePointer などの型がいつか用意されています。 
